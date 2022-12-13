@@ -1,2 +1,4 @@
-package ma.bankconnect.utils;public class Mail {
+package ma.bankconnect.utils;
+
+public class Mail {
 }
