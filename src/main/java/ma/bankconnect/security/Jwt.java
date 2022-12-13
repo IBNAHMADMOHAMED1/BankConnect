@@ -1,2 +1,4 @@
-package ma.bankconnect.security;public class Jwt {
+package ma.bankconnect.security;
+
+public class Jwt {
 }
