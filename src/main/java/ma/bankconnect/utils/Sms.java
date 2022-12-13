@@ -4,7 +4,10 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
+@PropertySource("classpath:application.properties")
 public class Sms {
     @Value("${ACCOUNT_SID}")
     private String accountSid;
@@ -14,8 +17,9 @@ public class Sms {
     private String twilioNumber;
     public Boolean sendSms(String to, String body) {
         // Set up account SID and auth token
+        System.out.println("accountSid = " + accountSid);
         Twilio.init(accountSid, authToken);
-        Message message = Message.creator(new PhoneNumber(to), new PhoneNumber(twilioNumber), body).create();
-        return message.getSid() != null;
+        Message message = Message.creator(new PhoneNumber(to), new PhoneNumber("+19737918082"), body).create();
+        return message.getErrorMessage() == null;
     }
 }
