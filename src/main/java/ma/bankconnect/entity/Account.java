@@ -2,6 +2,7 @@ package ma.bankconnect.entity;
 
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
