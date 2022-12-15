@@ -1,2 +1,4 @@
-package ma.bankconnect.entity;public class Bill {
+package ma.bankconnect.entity;
+
+public class Bill {
 }
