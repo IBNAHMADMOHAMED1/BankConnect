@@ -1,4 +1,4 @@
-package config;
+package ma.bankconnect.config;
 public class SecurityConfiguration {
 
     @Override
