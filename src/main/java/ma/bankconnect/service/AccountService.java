@@ -1,2 +1,4 @@
-package ma.bankconnect.service;public interface AccountService {
+package ma.bankconnect.service;
+
+public interface AccountService {
 }
