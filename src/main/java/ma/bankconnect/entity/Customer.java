@@ -21,6 +21,10 @@ public class Customer implements Serializable {
     private String phoneNumber;
     @Column(name = "cin", nullable = false, unique = true)
     private String cin;
+
+    @Column(name = "cin_image", nullable = false)
+    private String cinImage;
+
     public Customer() {
     }
     @Override
