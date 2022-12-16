@@ -2,14 +2,15 @@ package ma.bankconnect.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
-
 @Entity
 @Setter
 @Getter
+@RequiredArgsConstructor
 @Table(name = "agent")
 public class Agent implements Serializable {
 
@@ -49,4 +50,5 @@ public class Agent implements Serializable {
                 '}';
     }
 }
+
 
