@@ -1,4 +1,4 @@
-package ma.bankconnect.rest;
+package ma.bankconnect.api;
 
 import org.springframework.stereotype.Controller;
 

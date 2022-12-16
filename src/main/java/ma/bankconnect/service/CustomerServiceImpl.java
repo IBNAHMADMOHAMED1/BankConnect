@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import ma.bankconnect.entity.Customer;
 import ma.bankconnect.repository.AccountRepo;
 import ma.bankconnect.repository.CustomerRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findByCin(String cin) {
         return customerRepo.findByCin(cin);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepo.findAll();
     }
 
 
