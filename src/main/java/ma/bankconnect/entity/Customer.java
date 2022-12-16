@@ -25,6 +25,9 @@ public class Customer implements Serializable {
     @Column(name = "cin_image", nullable = false)
     private String cinImage;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     public Customer() {
     }
     @Override

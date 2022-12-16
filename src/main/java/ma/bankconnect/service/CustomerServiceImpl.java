@@ -1,6 +1,7 @@
 package ma.bankconnect.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ma.bankconnect.entity.Customer;
 import ma.bankconnect.repository.AccountRepo;
 import ma.bankconnect.repository.CustomerRepo;
@@ -9,11 +10,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
+
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepo customerRepo;
     private final AccountRepo accountRepo;
+
+    /*
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Customer customer = customerRepo.findByEmail(email);
+        if (customer == null) {
+            throw new UsernameNotFoundException("Customer not found");
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return new org.springframework.security.core.userdetails.User(
+                customer.getEmail(),
+                customer.getPassword(),
+                authorities
+        );
+
+    }
+
+     */
 
     @Override
     public Customer save(Customer customer) {
