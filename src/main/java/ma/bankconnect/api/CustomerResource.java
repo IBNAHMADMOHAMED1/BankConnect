@@ -1,20 +1,21 @@
 package ma.bankconnect.api;
+
 import lombok.RequiredArgsConstructor;
-import ma.bankconnect.entity.Customer;
 import ma.bankconnect.service.CustomerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("customers")
 @RequiredArgsConstructor
 public class CustomerResource {
     private final CustomerService customerService;
 
-    @GetMapping("/customers")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        return ResponseEntity.ok().body(customerService.getAllCustomers());
+    @GetMapping("all")
+    public ResponseEntity<String> getAllCustomers() {
+        System.out.println("---------1111111111111111------");
+        return ResponseEntity.ok("hhhhhhhhhhhhhhh");
     }
 }
