@@ -1,5 +1,6 @@
 package ma.bankconnect.config;
 
+import ma.bankconnect.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,38 +25,45 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class SecurityConfiguration   {
     private final JwtAuthFilter jwtAuthFilter;
     private final static List<UserDetails> APPLICATION_USERS = Arrays.asList(
             new User("ibnahmad@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))),
             new User("mohamed@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))));
 
-
     @Autowired
     @Lazy
     public SecurityConfiguration(JwtAuthFilter jwtAuthFilter) {
+        System.out.println("SecurityConfiguration");
         this.jwtAuthFilter = jwtAuthFilter;
     }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+
+        try {
+            http
+                    .csrf().disable()
+                    .authorizeHttpRequests()
+                    .requestMatchers("/api/v1/auth/**")
+                    .hasRole("GGG")
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .authenticationProvider(authenticationProvider())
+                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            return http.build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+    @Bean
+    public JwtUtils jwtUtils() {
+        return new JwtUtils();
+    }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
