@@ -1,6 +1,7 @@
 package ma.bankconnect.api;
 
 import lombok.RequiredArgsConstructor;
+import ma.bankconnect.dao.UserDao;
 import ma.bankconnect.dto.AuthenticationRequest;
 import ma.bankconnect.utils.JwtUtils;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,11 @@ public class AuthenticationResource {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
+    private final UserDao userDao;
 
     @PostMapping("/authenticate")
     public ResponseEntity<String> login(@RequestBody AuthenticationRequest authenticationRequest) {
+        userDao.setWho(authenticationRequest.getWho());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
