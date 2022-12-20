@@ -11,12 +11,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor @Slf4j
-
 public class CustomerServiceImpl implements CustomerService {
-
     private final CustomerRepo customerRepo;
     private final AccountRepo accountRepo;
-
     /*
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
