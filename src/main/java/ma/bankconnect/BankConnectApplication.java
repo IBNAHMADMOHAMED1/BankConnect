@@ -9,7 +9,7 @@ public class BankConnectApplication {
 
     private static Environment env;
     public static void main(String[] args) {
-       SpringApplication.run(BankConnectApplication.class, args);
+      SpringApplication.run(BankConnectApplication.class, args);
     }
 
 

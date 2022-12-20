@@ -1,5 +1,7 @@
 package ma.bankconnect.config;
 
+import ma.bankconnect.entity.Customer;
+import ma.bankconnect.service.CustomerServiceImpl;
 import ma.bankconnect.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +31,8 @@ import java.util.List;
 @Configuration
 public class SecurityConfiguration   {
     private final JwtAuthFilter jwtAuthFilter;
+    @Autowired
+    private CustomerServiceImpl customerService;
     private final static List<UserDetails> APPLICATION_USERS = Arrays.asList(
             new User("ibnahmad@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))),
             new User("mohamed@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))));
@@ -47,7 +51,7 @@ public class SecurityConfiguration   {
                     .csrf().disable()
                     .authorizeHttpRequests()
                     .requestMatchers("/api/v1/auth/**")
-                    .hasRole("GGG")
+                    .permitAll()
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -79,10 +83,15 @@ public class SecurityConfiguration   {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-                return APPLICATION_USERS.stream()
-                        .filter(userDetails -> userDetails.getUsername().equals(email))
-                        .findFirst()
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                System.out.println("loadUserByUsername");
+                final Customer customer = customerService.findByEmail(email);
+
+
+                if (customer != null) {
+                    System.out.println("customer != null");
+                    return new User(customer.getEmail(), customer.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+                }
+                throw new UsernameNotFoundException("User '" + email + "' not found");
             }
         };
     }
