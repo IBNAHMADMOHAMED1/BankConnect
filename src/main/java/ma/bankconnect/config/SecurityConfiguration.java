@@ -1,6 +1,6 @@
 package ma.bankconnect.config;
 
-import ma.bankconnect.entity.Customer;
+import ma.bankconnect.dao.UserDao;
 import ma.bankconnect.service.CustomerServiceImpl;
 import ma.bankconnect.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,7 @@ import java.util.List;
 @Configuration
 public class SecurityConfiguration   {
     private final JwtAuthFilter jwtAuthFilter;
+    private final UserDao userDao;
     @Autowired
     private CustomerServiceImpl customerService;
     private final static List<UserDetails> APPLICATION_USERS = Arrays.asList(
@@ -39,7 +40,8 @@ public class SecurityConfiguration   {
 
     @Autowired
     @Lazy
-    public SecurityConfiguration(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfiguration(JwtAuthFilter jwtAuthFilter, UserDao userDao) {
+        this.userDao = userDao;
         System.out.println("SecurityConfiguration");
         this.jwtAuthFilter = jwtAuthFilter;
     }
@@ -52,6 +54,10 @@ public class SecurityConfiguration   {
                     .authorizeHttpRequests()
                     .requestMatchers("/api/v1/auth/**")
                     .permitAll()
+                    .requestMatchers("/clients/**")
+                    .hasAnyAuthority("ROLE_USE")
+                    .requestMatchers("/admin/**")
+                    .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -80,19 +86,13 @@ public class SecurityConfiguration   {
     }
     @Bean
     public UserDetailsService  userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-                System.out.println("loadUserByUsername");
-                final Customer customer = customerService.findByEmail(email);
-
-
-                if (customer != null) {
-                    System.out.println("customer != null");
-                    return new User(customer.getEmail(), customer.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-                }
-                throw new UsernameNotFoundException("User '" + email + "' not found");
+        return email -> {
+            UserDetails userDetails = userDao.findByEmail(email);
+            if (userDetails != null) {
+                System.out.println("roles: " + userDetails.getAuthorities());
+                return userDetails;
             }
+            throw new UsernameNotFoundException("Email " + email + " not found");
         };
     }
     @Bean
