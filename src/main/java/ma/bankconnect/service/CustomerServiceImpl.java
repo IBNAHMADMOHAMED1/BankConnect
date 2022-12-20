@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ma.bankconnect.entity.Customer;
 import ma.bankconnect.repository.AccountRepo;
 import ma.bankconnect.repository.CustomerRepo;
+import ma.bankconnect.security.Hash;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepo customerRepo;
     private final AccountRepo accountRepo;
+    private final Hash hash;
     /*
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -36,6 +38,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(Customer customer) {
+        // hash password
+        String passwordBCrypt = hash.BCryptHashing(customer.getPassword());
+        customer.setPassword(passwordBCrypt);
         return customerRepo.save(customer);
     }
 
