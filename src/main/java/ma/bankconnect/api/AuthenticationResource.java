@@ -3,6 +3,9 @@ package ma.bankconnect.api;
 import lombok.RequiredArgsConstructor;
 import ma.bankconnect.dao.UserDao;
 import ma.bankconnect.dto.AuthenticationRequest;
+import ma.bankconnect.dto.CustomerRequest;
+import ma.bankconnect.entity.Customer;
+import ma.bankconnect.service.CustomerServiceImpl;
 import ma.bankconnect.utils.JwtUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +22,7 @@ public class AuthenticationResource {
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
     private final UserDao userDao;
+    private final CustomerServiceImpl customerService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<String> login(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -35,9 +39,21 @@ public class AuthenticationResource {
         }
         return ResponseEntity.badRequest().body("Bad credentials");
     }
-    @GetMapping("/clients")
-    public ResponseEntity<String> getAllCustomers(  ) {
-        System.out.println("---------1111111111111111------");
-        return ResponseEntity.ok("hhhhhhhhhhhhhhh");
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody CustomerRequest customerRequest) {
+        Customer customer = new Customer();
+        customer.setName(customerRequest.getNom());
+        customer.setAddress(customerRequest.getAdresse());
+        customer.setEmail(customerRequest.getEmail());
+        customer.setPassword(customerRequest.getPassword());
+        customer.setPhoneNumber(customerRequest.getTelephone());
+        customer.setCin(customerRequest.getCin());
+        customer.setCinImage(customerRequest.getCinImage());
+
+        Customer newCustomer =  customerService.save(customer);
+        if (newCustomer != null) {
+            return ResponseEntity.ok().body("Customer created");
+        }
+        return ResponseEntity.badRequest().body("Customer not created");
     }
 }
