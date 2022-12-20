@@ -5,9 +5,7 @@ import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 
@@ -26,7 +24,7 @@ public class Sms {
         // Set up account SID and auth token
         System.out.println("accountSid = " + accountSid);
         System.out.println("en" + twilioNumber);
-        Twilio.init(accountSid, authToken);
+        Twilio.init("AC45c6ec59c7d827f364d59d5136b42805", "57da4f24181e6b2e3fc254fa28baed13");
         Message message = Message.creator(new PhoneNumber(to), new PhoneNumber("+19737918082"), body).create();
         return message.getErrorMessage() == null;
     }
