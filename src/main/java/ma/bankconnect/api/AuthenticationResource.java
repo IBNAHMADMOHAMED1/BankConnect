@@ -39,7 +39,6 @@ public class AuthenticationResource {
         );
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         if (userDetails != null) {
-            System.out.println("userDetails = " + userDetails);
             return ResponseEntity.ok().body(jwtUtils.generateToken(userDetails));
         }
         return ResponseEntity.badRequest().body("Bad credentials");
