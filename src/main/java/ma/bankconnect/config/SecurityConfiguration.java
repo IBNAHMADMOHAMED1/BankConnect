@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -55,7 +55,7 @@ public class SecurityConfiguration   {
                     .requestMatchers("/api/v1/auth/**")
                     .permitAll()
                     .requestMatchers("/clients/**")
-                    .hasAnyAuthority("ROLE_USE")
+                    .hasAnyAuthority("ROLE_USRE")
                     .requestMatchers("/admin/**")
                     .hasRole("ADMIN")
                     .anyRequest()
@@ -73,7 +73,6 @@ public class SecurityConfiguration   {
     public JwtUtils jwtUtils() {
         return new JwtUtils();
     }
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -82,14 +81,13 @@ public class SecurityConfiguration   {
         return daoAuthenticationProvider;
     }
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
     @Bean
     public UserDetailsService  userDetailsService() {
         return email -> {
             UserDetails userDetails = userDao.findByEmail(email);
             if (userDetails != null) {
-                System.out.println("roles: " + userDetails.getAuthorities());
                 return userDetails;
             }
             throw new UsernameNotFoundException("Email " + email + " not found");
