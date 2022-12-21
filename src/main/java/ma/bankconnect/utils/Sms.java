@@ -19,7 +19,6 @@ public class Sms {
     private String authToken;
     @Value("${TWILIO_NUMBER}")
     private String twilioNumber;
-
         public Boolean sendSms(String to, String body) {
         // Set up account SID and auth token
         System.out.println("accountSid = " + accountSid);
