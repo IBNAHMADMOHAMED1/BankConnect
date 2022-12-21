@@ -29,9 +29,9 @@ public class UserDao {
             return new User(customer.getEmail(), customer.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
         } else if (role.equals("admin")) {
             Agent agent = adminService.findByEmail(email);
+            System.out.println(agent.getEmail());
             return new User(agent.getEmail(), agent.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN")));
         }
         return null;
     }
-
 }
