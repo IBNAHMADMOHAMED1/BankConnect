@@ -1,6 +1,7 @@
 package ma.bankconnect.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 @Data
 public class CustomerRequest {
     private String email;
@@ -9,7 +10,7 @@ public class CustomerRequest {
     private String nom;
     private String telephone;
     private String cin;
-    private String cinImage;
+    private MultipartFile file;
 }
 
 /*
