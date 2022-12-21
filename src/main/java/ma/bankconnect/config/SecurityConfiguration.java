@@ -1,5 +1,6 @@
 package ma.bankconnect.config;
 
+import ma.bankconnect.ControllerAdvice.CustomAuthenticationEntryPoint;
 import ma.bankconnect.dao.UserDao;
 import ma.bankconnect.service.CustomerServiceImpl;
 import ma.bankconnect.utils.JwtUtils;
@@ -32,6 +33,8 @@ import java.util.List;
 public class SecurityConfiguration   {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDao userDao;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     @Autowired
     private CustomerServiceImpl customerService;
     private final static List<UserDetails> APPLICATION_USERS = Arrays.asList(
@@ -40,8 +43,9 @@ public class SecurityConfiguration   {
 
     @Autowired
     @Lazy
-    public SecurityConfiguration(JwtAuthFilter jwtAuthFilter, UserDao userDao) {
+    public SecurityConfiguration(JwtAuthFilter jwtAuthFilter, UserDao userDao, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.userDao = userDao;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
         System.out.println("SecurityConfiguration");
         this.jwtAuthFilter = jwtAuthFilter;
     }
@@ -51,13 +55,11 @@ public class SecurityConfiguration   {
         try {
             http
                     .csrf().disable()
+                    .exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .and()
                     .authorizeHttpRequests()
                     .requestMatchers("/api/v1/auth/**")
                     .permitAll()
-                    .requestMatchers("/clients/**")
-                    .hasAnyAuthority("ROLE_USRE")
-                    .requestMatchers("/admin/**")
-                    .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -86,6 +88,8 @@ public class SecurityConfiguration   {
     @Bean
     public UserDetailsService  userDetailsService() {
         return email -> {
+            String who = jwtAuthFilter.getWhoWantToLogin();
+            userDao.setWho(who);
             UserDetails userDetails = userDao.findByEmail(email);
             if (userDetails != null) {
                 return userDetails;
