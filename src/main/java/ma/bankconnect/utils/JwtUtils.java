@@ -59,5 +59,10 @@ public class JwtUtils {
         return extractExpiration(token).before(new Date());
     }
 
+    public String[] extractAuthorities(String token){
+        Claims claims = extractAllClaims(token);
+        return claims.get("authorities").toString().split(",");
+    }
+
 
 }
