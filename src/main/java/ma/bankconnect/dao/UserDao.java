@@ -26,13 +26,11 @@ public class UserDao {
 
     public UserDetails findByEmail(String email) {
         String role = getWho();
-        System.out.println("role: " + role);
         if (role.equals("customer")) {
             Customer customer = customerService.findByEmail(email);
             return new User(customer.getEmail(), customer.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
         } else if (role.equals("admin")) {
             Agent agent = adminRepo.findAgentByEmail(email);
-            System.out.println(agent.getNom());
             return new User(agent.getEmail(), agent.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN")));
 
         }

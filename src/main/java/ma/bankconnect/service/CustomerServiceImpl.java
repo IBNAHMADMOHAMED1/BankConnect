@@ -72,6 +72,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepo.findById(id).orElse(null);
     }
 
+    public List<Customer> findAll() {
+        return customerRepo.findAll();
+    }
 
 }
 
