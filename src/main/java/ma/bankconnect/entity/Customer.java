@@ -7,10 +7,10 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class Customer implements Serializable {
-   @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
-   @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
+ @Id
+ @GeneratedValue(strategy = GenerationType.AUTO)
+ @Column(name = "id", nullable = false, updatable = false)
+ private Long id;
     @Column(name = "nom", nullable = false)
     private String name;
     @Column(name = "adresse", nullable = false)
@@ -27,6 +27,10 @@ public class Customer implements Serializable {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "verified")
+    private boolean verified;
+
 
     public Customer() {
     }
