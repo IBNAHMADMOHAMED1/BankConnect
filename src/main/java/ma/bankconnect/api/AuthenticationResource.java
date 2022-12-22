@@ -6,7 +6,9 @@ import ma.bankconnect.dao.UserDao;
 import ma.bankconnect.dto.AuthenticationRequest;
 import ma.bankconnect.dto.CustomerRequest;
 import ma.bankconnect.entity.Customer;
+import ma.bankconnect.entity.Sms;
 import ma.bankconnect.service.CustomerServiceImpl;
+import ma.bankconnect.service.sms.SmsServiceImpl;
 import ma.bankconnect.utils.JwtUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +30,7 @@ public class AuthenticationResource {
     private final UserDao userDao;
     private final CustomerServiceImpl customerService;
     private final CloudinaryConfig cloud;
+    private final SmsServiceImpl smsService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<String> login(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -44,7 +48,7 @@ public class AuthenticationResource {
         return ResponseEntity.badRequest().body("Bad credentials");
     }
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<String> register(@ModelAttribute CustomerRequest customerRequest) {
+    public ResponseEntity<String> register(@Validated @ModelAttribute CustomerRequest customerRequest)  {
         if (customerService.findByEmail(customerRequest.getEmail()) != null) {
             return ResponseEntity.badRequest().body("Email already exists");
         }
@@ -60,8 +64,25 @@ public class AuthenticationResource {
         customer.setCinImage(url);
         Customer newCustomer =  customerService.save(customer);
         if (newCustomer != null) {
-            return ResponseEntity.ok().body("Customer created");
+
+             Sms smsSent = smsService.save(newCustomer.getId()) ;
+             ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("{\"message\": \"Customer created successfully\", \"Code sms\": \""+smsSent.getCode()+"\"}");
         }
         return ResponseEntity.badRequest().body("Customer not created");
+    }
+    @GetMapping("/verify/{id}/{code}")
+    public ResponseEntity<String> verify(@PathVariable("id") Long id, @PathVariable("code") String code) {
+        Customer customer = customerService.findById(id);
+        if (customer != null) {
+            Sms sms = smsService.findByCustomerId(id);
+            if (sms != null) {
+                if (sms.getCode().equals(code) && smsService.checkExpiration(sms.getSendDate())) {
+                    customer.setVerified(true);
+                    customerService.save(customer);
+                    return ResponseEntity.ok().body("Customer verified successfully");
+                }
+            }
+        }
+        return ResponseEntity.badRequest().body("Customer not verified");
     }
 }
