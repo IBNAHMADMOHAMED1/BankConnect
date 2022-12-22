@@ -10,5 +10,6 @@ public interface CustomerService {
     Customer findByCin(String cin);
 
     List<Customer> getAllCustomers();
+    void changeVerified(Long id);
 
 }
