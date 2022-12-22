@@ -9,7 +9,7 @@ public class AdminServiceimpl implements AdminService {
     private AdminRepo adminRepo;
 
     @Override
-    public Agent findByEmail(String email) {
-        return adminRepo.findByEmail(email);
+    public Agent getByEmail(String email) {
+        return adminRepo.findAgentByEmail(email);
     }
 }

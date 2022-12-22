@@ -64,8 +64,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
     public String getWhoWantToLogin() {
         String[] authorities = extractAuthorities(getToken());
-        System.out.println("token: " + getToken());
-        System.out.println("authorities: " + authorities[0]);
         String whoWantToLogin = authorities[0].substring(12, authorities[0].length() - 2);
         if (whoWantToLogin.equals("ROLE_CUSTOMER")) {
             return "customer";

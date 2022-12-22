@@ -88,8 +88,8 @@ public class SecurityConfiguration   {
     @Bean
     public UserDetailsService  userDetailsService() {
         return email -> {
-            String who = jwtAuthFilter.getWhoWantToLogin();
-            userDao.setWho(who);
+           // String who = jwtAuthFilter.getWhoWantToLogin();
+            //if (who != null) userDao.setWho(who);
             UserDetails userDetails = userDao.findByEmail(email);
             if (userDetails != null) {
                 return userDetails;

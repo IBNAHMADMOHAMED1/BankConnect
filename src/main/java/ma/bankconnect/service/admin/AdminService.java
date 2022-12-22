@@ -4,5 +4,5 @@ import ma.bankconnect.entity.Agent;
 
 public interface AdminService {
 
-    Agent findByEmail(String email);
+    Agent getByEmail(String email);
 }

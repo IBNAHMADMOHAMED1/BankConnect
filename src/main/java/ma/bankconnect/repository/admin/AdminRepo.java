@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRepo extends JpaRepository<Agent, Long> {
-    Agent findByEmail(String email);
+    Agent findAgentByEmail(String email);
 }
