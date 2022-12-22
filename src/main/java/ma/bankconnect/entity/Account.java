@@ -2,7 +2,6 @@ package ma.bankconnect.entity;
 
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +15,8 @@ import java.time.LocalDateTime;
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long id;
     @OneToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
