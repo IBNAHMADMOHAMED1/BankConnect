@@ -1,44 +1,44 @@
 package ma.bankconnect.entity;
+
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import java.io.Serializable;
+
+@Data
 @Entity
-@Setter
-@Getter
+@Table(name = "customer")
 public class Customer implements Serializable {
+
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
-    @Column(name = "nom", nullable = false)
-    private String name;
-    @Column(name = "adresse", nullable = false)
-    private String address;
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
-    @Column(name = "telephone", nullable = false)
-    private String phoneNumber;
-    @Column(name = "cin", nullable = false, unique = true)
-    private String cin;
+   private Long id;
 
-    @Column(name = "cin_image", nullable = false)
-    private String cinImage;
+   @Column(name = "nom", nullable = false)
+   private String nom;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+   @Column(name = "prenom", nullable = false)
+   private String prenom;
 
-    public Customer() {
-    }
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", cin='" + cin + '\'' +
-                '}';
-    }
+   @Column(name = "adresse", nullable = false)
+   private String address;
+
+   @Column(name = "email", nullable = false, unique = true)
+   private String email;
+
+   @Column(name = "password", nullable = false)
+   private String password;
+
+   @Column(name = "telephone", nullable = false)
+   private String telephone;
+
+   @Column(name = "cin", nullable = false, unique = true)
+   private String cin;
+
+   @Column(name = "cin_image", nullable = false)
+   private String cinImage;
+
+   @Column(name = "status", nullable = false)
+   private Boolean status;
+
 }
