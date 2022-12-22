@@ -59,6 +59,18 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepo.findAll();
     }
 
+    @Override
+    public void changeVerified(Long id) {
+        Customer customer = customerRepo.findById(id).orElse(null);
+        if (customer != null) {
+            customer.setVerified(true);
+            customerRepo.save(customer);
+        }
+    }
+
+    public Customer findById(Long id) {
+        return customerRepo.findById(id).orElse(null);
+    }
 
 
 }
