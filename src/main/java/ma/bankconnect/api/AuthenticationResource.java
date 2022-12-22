@@ -53,11 +53,11 @@ public class AuthenticationResource {
             return ResponseEntity.badRequest().body("Email already exists");
         }
         Customer customer = new Customer();
-        customer.setName(customerRequest.getNom());
+        customer.setNom(customerRequest.getNom());
         customer.setAddress(customerRequest.getAdresse());
         customer.setEmail(customerRequest.getEmail());
         customer.setPassword(customerRequest.getPassword());
-        customer.setPhoneNumber(customerRequest.getTelephone());
+        customer.setTelephone(customerRequest.getTelephone());
         customer.setCin(customerRequest.getCin());
         MultipartFile file = customerRequest.getFile();
         String url = cloud.uploadImage(file);

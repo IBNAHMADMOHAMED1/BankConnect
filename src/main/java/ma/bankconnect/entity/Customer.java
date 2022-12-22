@@ -38,7 +38,7 @@ public class Customer implements Serializable {
    @Column(name = "cin_image", nullable = false)
    private String cinImage;
 
-   @Column(name = "status", nullable = false)
-   private Boolean status;
+   @Column(name = "verified", nullable = false)
+   private boolean verified;
 
 }
