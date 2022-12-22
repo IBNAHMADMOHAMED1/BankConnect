@@ -22,7 +22,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Getter
 @Setter
 public class JwtAuthFilter extends OncePerRequestFilter {
-
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
     private String token;
