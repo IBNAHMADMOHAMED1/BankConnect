@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 
 
 @Configuration
-public class Sms {
+public class SmsUtil {
     @Autowired
     private Environment env;
     @Value("${ACCOUNT_SID}")
