@@ -63,6 +63,4 @@ public class JwtUtils {
         Claims claims = extractAllClaims(token);
         return claims.get("authorities").toString().split(",");
     }
-
-
 }
