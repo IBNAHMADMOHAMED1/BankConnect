@@ -21,11 +21,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerResource {
     private final CustomerServiceImpl customerService;
+    private final AccountResource accountResource;
     @GetMapping("all")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_CUSTOMER')")
     public ResponseEntity<List<Customer>> getAllCustomers() {
         List<Customer> customers = customerService.getAllCustomers();
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(customers);
-
     }
 }
