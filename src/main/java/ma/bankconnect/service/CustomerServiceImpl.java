@@ -16,25 +16,6 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepo customerRepo;
     private final AccountRepo accountRepo;
     private final Hash hash;
-    /*
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Customer customer = customerRepo.findByEmail(email);
-        if (customer == null) {
-            throw new UsernameNotFoundException("Customer not found");
-        }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        return new org.springframework.security.core.userdetails.User(
-                customer.getEmail(),
-                customer.getPassword(),
-                authorities
-        );
-
-    }
-
-     */
 
     @Override
     public Customer save(Customer customer) {
@@ -74,6 +55,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     public List<Customer> findAll() {
         return customerRepo.findAll();
+    }
+    public Long findIdCustomerByEmail(String email) {
+        System.out.println("email: " + email);
+        return customerRepo.findIdByEmail(email);
     }
 
 }
