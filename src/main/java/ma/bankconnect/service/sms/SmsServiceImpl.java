@@ -65,4 +65,10 @@ public class SmsServiceImpl implements SmsService {
         return smsRepo.findByCustomerId(id);
     }
 
+    @Override
+    public void deleteSms(Long id) {
+        smsRepo.deleteById(id);
+    }
+
+
 }
