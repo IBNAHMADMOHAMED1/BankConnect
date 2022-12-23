@@ -85,4 +85,17 @@ public class AuthenticationResource {
         }
         return ResponseEntity.badRequest().body("Customer not verified");
     }
+    @GetMapping("/resend/{id}")
+    public ResponseEntity<String> resend(@PathVariable("id") Long id) {
+        Customer customer = customerService.findById(id);
+        if (customer != null) {
+            Sms sms = smsService.findByCustomerId(id);
+            if (sms != null) {
+                smsService.deleteSms(sms.getId());
+                Sms smsSent = smsService.save(id);
+                return ResponseEntity.ok().body("{\"message\": \"Code sms resent successfully\", \"Code sms\": \""+smsSent.getCode()+"\"}");
+            }
+        }
+        return ResponseEntity.badRequest().body("Customer not found");
+    }
 }
