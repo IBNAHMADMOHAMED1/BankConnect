@@ -23,7 +23,7 @@ public class SmsUtil {
         // Set up account SID and auth token
         System.out.println("accountSid = " + accountSid);
         System.out.println("en" + twilioNumber);
-        Twilio.init("AC45c6ec59c7d827f364d59d5136b42805", "57da4f24181e6b2e3fc254fa28baed13");
+        Twilio.init("AC45c6ec59c7d827f364d59d5136b42805", "46c7f0d77a9e9cac5c4425c65a1bc593");
         Message message = Message.creator(new PhoneNumber(to), new PhoneNumber("+19737918082"), body).create();
         return message.getErrorMessage() == null;
     }
