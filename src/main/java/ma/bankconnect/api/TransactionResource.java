@@ -43,10 +43,11 @@ public class TransactionResource {
             operation.setAccountTo(accountTo);
             operation.setType("WITHDRAW");
         }
+        Transaction transaction = null;
         AccountOperation savedOperation = operationService.save(operation);
 
 
-        return ResponseEntity.ok().body();
+        return ResponseEntity.ok().body(transaction);
     }
 
 
